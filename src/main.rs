@@ -32,8 +32,8 @@ fn binary_search(word: &String, words: &[String]) -> bool {
     }
 
     match word.cmp(&words[centre_index]) {
-        Ordering::Greater => return binary_search(word, &words[centre_index..]),
-        Ordering::Less => return binary_search(word, &words[..centre_index]),
+        Ordering::Greater => binary_search(word, &words[centre_index..]),
+        Ordering::Less => binary_search(word, &words[..centre_index]),
         _ => panic!(),
     }
 }
