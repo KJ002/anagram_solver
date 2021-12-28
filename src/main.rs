@@ -1,5 +1,5 @@
 use itertools::Itertools;
-use std::cmp::Ordering;
+use std::cmp::{Ordering, Reverse};
 use std::fs;
 
 fn contains_any_characters(word: &String, characters: Vec<char>) -> bool {
@@ -59,17 +59,7 @@ fn main() {
         }
     }
 
-    solved.sort_by(|a, b| {
-        if a.len() == b.len(){
-            return Ordering::Equal
-        }
-
-        if a.len() < b.len(){
-            return Ordering::Greater
-        }
-
-        return Ordering::Less
-    });
+    solved.sort_by_key(|a| Reverse(a.len()));
 
     for solved_word in solved{
         println!("{}", solved_word);
