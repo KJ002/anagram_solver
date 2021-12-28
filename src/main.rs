@@ -39,20 +39,27 @@ fn binary_search(word: &String, words: &[String]) -> bool {
 }
 
 fn main() {
-    let perms = "tests".split("").permutations("tests".len());
+    let perms = "this".split("").permutations("this".len());
     let words: Vec<String> = fs::read_to_string("words.txt")
         .expect("Couldn't open words.txt. Does it exist?")
         .split("\n")
         .map(|x| x.to_string())
         .collect();
+    let mut solved: Vec<String> = Vec::new();
 
     for perm in perms {
         let result = perm.join("").to_owned();
 
         if contains_any_characters(&result, vec!['a', 'e', 'i', 'o', 'y'])
+            && !solved.iter().any(|x| x == &result)
             && binary_search(&result, &words)
         {
-            println!("{}", result);
+
+            solved.push(result);
         }
+    }
+
+    for solved_word in solved{
+        println!("{}", solved_word);
     }
 }
