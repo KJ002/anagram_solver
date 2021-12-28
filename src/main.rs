@@ -2,7 +2,7 @@ use itertools::Itertools;
 use std::cmp::{Ordering, Reverse};
 use std::fs;
 
-fn contains_any_characters(word: &String, characters: Vec<char>) -> bool {
+fn contains_any_characters(word: &str, characters: Vec<char>) -> bool {
     for character in characters {
         if word
             .to_lowercase()
@@ -14,7 +14,7 @@ fn contains_any_characters(word: &String, characters: Vec<char>) -> bool {
     false
 }
 
-fn binary_search(word: &String, words: &[String]) -> bool {
+fn binary_search(word: &str, words: &[String]) -> bool {
     if words.len() <= 20 {
         for word_ in words {
             if word_ == word {
