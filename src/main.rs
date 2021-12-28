@@ -59,6 +59,18 @@ fn main() {
         }
     }
 
+    solved.sort_by(|a, b| {
+        if a.len() == b.len(){
+            return Ordering::Equal
+        }
+
+        if a.len() < b.len(){
+            return Ordering::Greater
+        }
+
+        return Ordering::Less
+    });
+
     for solved_word in solved{
         println!("{}", solved_word);
     }
