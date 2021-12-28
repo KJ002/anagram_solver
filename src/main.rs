@@ -18,7 +18,7 @@ fn binary_search(word: &String, words: &[String]) -> bool {
     if words.len() <= 20 {
         for word_ in words {
             if word_ == word {
-                true;
+                return true;
             }
         }
 
@@ -28,7 +28,7 @@ fn binary_search(word: &String, words: &[String]) -> bool {
     let centre_index = (words.len() - 1) / 2;
 
     if word == &words[centre_index] {
-        true;
+        return true;
     }
 
     match word.cmp(&words[centre_index]) {
