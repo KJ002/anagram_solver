@@ -54,14 +54,13 @@ fn main() {
             && !solved.iter().any(|x| x == &result)
             && binary_search(&result, &words)
         {
-
             solved.push(result);
         }
     }
 
     solved.sort_by_key(|a| Reverse(a.len()));
 
-    for solved_word in solved{
+    for solved_word in solved {
         println!("{}", solved_word);
     }
 }
