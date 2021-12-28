@@ -27,7 +27,7 @@ fn binary_search(word: &str, words: &[String]) -> bool {
 
     let centre_index = (words.len() - 1) / 2;
 
-    if word == &words[centre_index] {
+    if word == words[centre_index] {
         return true;
     }
 
