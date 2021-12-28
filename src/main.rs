@@ -42,7 +42,7 @@ fn main() {
     let perms = "this".split("").permutations("this".len());
     let words: Vec<String> = fs::read_to_string("words.txt")
         .expect("Couldn't open words.txt. Does it exist?")
-        .split("\n")
+        .split('\n')
         .map(|x| x.to_string())
         .collect();
     let mut solved: Vec<String> = Vec::new();
