@@ -39,7 +39,9 @@ fn binary_search(word: &str, words: &[String]) -> bool {
 }
 
 fn main() {
-    let perms = "this".split("").permutations("this".len());
+    let anagram = "thisopap";
+
+    let perms = anagram.split("").permutations(anagram.len()).unique();
     let words: Vec<String> = fs::read_to_string("words.txt")
         .expect("Couldn't open words.txt. Does it exist?")
         .split('\n')
