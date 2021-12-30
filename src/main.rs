@@ -48,7 +48,7 @@ fn main() {
         .collect();
     let mut solved: Vec<String> = Vec::new();
     for perm in letters.permutations(anagram.len()).unique(){
-        let result = perm.iter().cloned().collect::<String>();
+        let result = perm.into_iter().collect::<String>();
 
         if contains_any_characters(&result, vec!['a', 'e', 'i', 'o', 'y'])
             && !solved.iter().any(|x| x == &result)
