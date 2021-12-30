@@ -39,18 +39,16 @@ fn binary_search(word: &str, words: &[String]) -> bool {
 }
 
 fn main() {
-    let anagram = "tapsa";
-
-    let perms = anagram.split("").permutations(anagram.len());
+    let anagram = "tests";
+    let letters = anagram.chars();
     let words: Vec<String> = fs::read_to_string("words.txt")
         .expect("Couldn't open words.txt. Does it exist?")
         .split('\n')
         .map(String::from)
         .collect();
     let mut solved: Vec<String> = Vec::new();
-
-    for perm in perms {
-        let result = perm.join("").to_owned();
+    for perm in letters.permutations(anagram.len()).unique(){
+        let result = perm.iter().cloned().collect::<String>();
 
         if contains_any_characters(&result, vec!['a', 'e', 'i', 'o', 'y'])
             && !solved.iter().any(|x| x == &result)
