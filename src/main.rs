@@ -50,32 +50,31 @@ fn nub(list: Vec<Vec<char>>) -> Vec<Vec<char>> {
     return result;
 }
 
-fn all_lengths(permutations: Vec<Vec<char>>) -> Vec<Vec<char>> {
-    let mut result: Vec<Vec<char>> = permutations.clone();
-
-    for item in permutations {
-        for i in 0..item.len() {
-            result.push(item[0..i].to_vec());
-        }
+fn all_lengths(anagram: &str, k: &usize) -> Vec<Vec<char>>{
+    if *k == 1{
+        return anagram.chars().permutations(*k).unique().collect_vec();
     }
 
-    return nub(result);
+    let mut result: Vec<Vec<char>> = Vec::new();
+    result.append(&mut anagram.chars().permutations(*k).unique().collect_vec());
+    result.append(&mut all_lengths(anagram, &(k-1)));
+
+    result
 }
 
 fn main() {
     let anagram = "tests";
-    let letters: Vec<Vec<char>> = all_lengths(
-        anagram
-            .chars()
-            .permutations(anagram.len())
-            .unique()
-            .collect_vec(),
-    );
+    println!("Calculating letter permutations...");
+    let letters: Vec<Vec<char>> = all_lengths(anagram, &anagram.len());
+    println!("{} letter permutations", letters.len());
+    println!("Reading dictionary...");
     let words: Vec<String> = fs::read_to_string("words.txt")
         .expect("Couldn't open words.txt. Does it exist?")
         .split('\n')
         .map(String::from)
         .collect();
+    println!("{} words in dictionary", words.len());
+    println!("Mapping letter permutations to a dictionary...");
     let mut solved: Vec<String> = Vec::new();
     for perm in letters {
         let result = perm.into_iter().collect::<String>();
