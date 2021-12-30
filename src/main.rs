@@ -52,17 +52,23 @@ fn all_lengths(anagram: &str, k: &usize) -> Vec<Vec<char>> {
 
 fn main() {
     let anagram = "tests";
+
     println!("Calculating letter permutations...");
+
     let letters: Vec<Vec<char>> = all_lengths(anagram, &anagram.len());
+
     println!("{} letter permutations", letters.len());
     println!("Reading dictionary...");
+
     let words: Vec<String> = fs::read_to_string("words.txt")
         .expect("Couldn't open words.txt. Does it exist?")
         .split('\n')
         .map(String::from)
         .collect();
+
     println!("{} words in dictionary", words.len());
     println!("Mapping letter permutations to a dictionary...");
+
     let mut solved: Vec<String> = Vec::new();
     for perm in letters {
         let result = perm.into_iter().collect::<String>();
