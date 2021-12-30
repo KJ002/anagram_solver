@@ -38,14 +38,14 @@ fn binary_search(word: &str, words: &[String]) -> bool {
     }
 }
 
-fn all_lengths(anagram: &str, k: &usize) -> Vec<Vec<char>>{
-    if *k == 1{
+fn all_lengths(anagram: &str, k: &usize) -> Vec<Vec<char>> {
+    if *k == 1 {
         return anagram.chars().permutations(*k).unique().collect_vec();
     }
 
     let mut result: Vec<Vec<char>> = Vec::new();
     result.append(&mut anagram.chars().permutations(*k).unique().collect_vec());
-    result.append(&mut all_lengths(anagram, &(k-1)));
+    result.append(&mut all_lengths(anagram, &(k - 1)));
 
     result
 }
