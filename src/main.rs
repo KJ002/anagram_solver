@@ -38,6 +38,18 @@ fn binary_search(word: &str, words: &[String]) -> bool {
     }
 }
 
+fn nub(list: Vec<Vec<char>>) -> Vec<Vec<char>> {
+    let mut result: Vec<Vec<char>> = list.clone();
+
+    for item in list {
+        if !result.iter().any(|x| x == &item) {
+            result.push(item);
+        }
+    }
+
+    return result;
+}
+
 fn all_lengths(permutations: Vec<Vec<char>>) -> Vec<Vec<char>> {
     let mut result: Vec<Vec<char>> = permutations.clone();
 
@@ -47,7 +59,7 @@ fn all_lengths(permutations: Vec<Vec<char>>) -> Vec<Vec<char>> {
         }
     }
 
-    return result;
+    return nub(result);
 }
 
 fn main() {
