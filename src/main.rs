@@ -38,16 +38,34 @@ fn binary_search(word: &str, words: &[String]) -> bool {
     }
 }
 
+fn all_lengths(permutations: Vec<Vec<char>>) -> Vec<Vec<char>> {
+    let mut result: Vec<Vec<char>> = permutations.clone();
+
+    for item in permutations {
+        for i in 0..item.len() {
+            result.push(item[0..i].to_vec());
+        }
+    }
+
+    return result;
+}
+
 fn main() {
     let anagram = "tests";
-    let letters = anagram.chars();
+    let letters: Vec<Vec<char>> = all_lengths(
+        anagram
+            .chars()
+            .permutations(anagram.len())
+            .unique()
+            .collect_vec(),
+    );
     let words: Vec<String> = fs::read_to_string("words.txt")
         .expect("Couldn't open words.txt. Does it exist?")
         .split('\n')
         .map(String::from)
         .collect();
     let mut solved: Vec<String> = Vec::new();
-    for perm in letters.permutations(anagram.len()).unique(){
+    for perm in letters {
         let result = perm.into_iter().collect::<String>();
 
         if contains_any_characters(&result, vec!['a', 'e', 'i', 'o', 'y'])
