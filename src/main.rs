@@ -16,13 +16,7 @@ fn contains_any_characters(word: &str, characters: Vec<char>) -> bool {
 
 fn binary_search(word: &str, words: &[String]) -> bool {
     if words.len() <= 20 {
-        for word_ in words {
-            if word_ == word {
-                return true;
-            }
-        }
-
-        return false;
+        return words.iter().any(|x| x == word);
     }
 
     let centre_index = (words.len() - 1) / 2;
@@ -51,7 +45,7 @@ fn all_lengths(anagram: &str, k: &usize) -> Vec<Vec<char>> {
 }
 
 fn main() {
-    let anagram = "tests";
+    let anagram = "your";
 
     println!("Calculating letter permutations...");
 
