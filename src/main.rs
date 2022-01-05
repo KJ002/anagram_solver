@@ -1,5 +1,6 @@
 use itertools::Itertools;
 use std::cmp::{Ordering, Reverse};
+use std::env;
 use std::fs;
 
 fn contains_any_characters(word: &str, characters: Vec<char>) -> bool {
@@ -45,11 +46,12 @@ fn all_lengths(anagram: &str, k: &usize) -> Vec<Vec<char>> {
 }
 
 fn main() {
-    let anagram = "your";
+    let args: Vec<String> = env::args().collect();
+    let anagram = &args[1];
 
     println!("Calculating letter permutations...");
 
-    let letters: Vec<Vec<char>> = all_lengths(anagram, &anagram.len());
+    let letters: Vec<Vec<char>> = all_lengths(&anagram, &anagram.len());
 
     println!("{} letter permutations", letters.len());
     println!("Reading dictionary...");
