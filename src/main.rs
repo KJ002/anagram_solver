@@ -45,6 +45,31 @@ fn all_lengths(anagram: &str, k: &usize) -> Vec<Vec<char>> {
     result
 }
 
+pub fn solve_anagram(anagram: &str) -> Vec<String>{
+    let letters: Vec<Vec<char>> = all_lengths(&anagram, &anagram.len());
+    let words: Vec<String> = fs::read_to_string("words.txt")
+        .expect("Couldn't open words.txt. Does it exist?")
+        .split('\n')
+        .map(String::from)
+        .collect();
+
+    let mut solved: Vec<String> = Vec::new();
+
+    for perm in letters {
+        let result = perm.into_iter().collect::<String>();
+
+        if contains_any_characters(&result, vec!['a', 'e', 'i', 'o', 'y'])
+            && !solved.iter().any(|x| x == &result)
+            && binary_search(&result, &words)
+        {
+            solved.push(result);
+        }
+    }
+
+    solved.sort_by_key(|a| Reverse(a.len()));
+    solved
+}
+
 fn main() {
     let args: Vec<String> = env::args().collect();
     let anagram = &args[1];
