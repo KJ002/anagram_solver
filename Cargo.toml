@@ -5,6 +5,7 @@ edition = "2021"
 
 [lib]
 name = "anagram_solver"
+crate-type = ["dylib"]
 
 [dependencies]
 itertools = "0.10.3"
