@@ -3,6 +3,8 @@ use std::cmp::{Ordering, Reverse};
 use std::env;
 use std::fs;
 
+use pyo3::prelude::*;
+
 fn contains_any_characters(word: &str, characters: Vec<char>) -> bool {
     for character in characters {
         if word
@@ -45,27 +47,17 @@ fn all_lengths(anagram: &str, k: &usize) -> Vec<Vec<char>> {
     result
 }
 
-fn main() {
-    let args: Vec<String> = env::args().collect();
-    let anagram = &args[1];
-
-    println!("Calculating letter permutations...");
-
+#[pyfunction]
+fn solve_anagram(anagram: &str) -> PyResult<Vec<String>>{
     let letters: Vec<Vec<char>> = all_lengths(&anagram, &anagram.len());
-
-    println!("{} letter permutations", letters.len());
-    println!("Reading dictionary...");
-
     let words: Vec<String> = fs::read_to_string("words.txt")
         .expect("Couldn't open words.txt. Does it exist?")
         .split('\n')
         .map(String::from)
         .collect();
 
-    println!("{} words in dictionary", words.len());
-    println!("Mapping letter permutations to a dictionary...");
-
     let mut solved: Vec<String> = Vec::new();
+
     for perm in letters {
         let result = perm.into_iter().collect::<String>();
 
@@ -78,8 +70,11 @@ fn main() {
     }
 
     solved.sort_by_key(|a| Reverse(a.len()));
+    Ok(solved)
+}
 
-    for solved_word in solved {
-        println!("{}", solved_word);
-    }
+#[pymodule]
+fn anagram_solver(_py: Python, m: &PyModule) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(solve_anagram, m)?)?;
+    Ok(())
 }
