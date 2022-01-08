@@ -3,6 +3,8 @@ use std::cmp::{Ordering, Reverse};
 use std::env;
 use std::fs;
 
+use pyo3::prelude::*;
+
 fn contains_any_characters(word: &str, characters: Vec<char>) -> bool {
     for character in characters {
         if word
@@ -45,7 +47,8 @@ fn all_lengths(anagram: &str, k: &usize) -> Vec<Vec<char>> {
     result
 }
 
-pub fn solve_anagram(anagram: &str) -> Vec<String>{
+#[pyfunction]
+fn solve_anagram(anagram: &str) -> PyResult<Vec<String>>{
     let letters: Vec<Vec<char>> = all_lengths(&anagram, &anagram.len());
     let words: Vec<String> = fs::read_to_string("words.txt")
         .expect("Couldn't open words.txt. Does it exist?")
@@ -67,5 +70,11 @@ pub fn solve_anagram(anagram: &str) -> Vec<String>{
     }
 
     solved.sort_by_key(|a| Reverse(a.len()));
-    solved
+    Ok(solved)
+}
+
+#[pymodule]
+fn anagram_solver(_py: Python, m: &PyModule) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(solve_anagram, m)?)?;
+    Ok(())
 }
