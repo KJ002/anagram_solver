@@ -1,6 +1,9 @@
 use itertools::Itertools;
+
 use std::cmp::{Ordering, Reverse};
 use std::fs;
+
+use std::thread;
 
 use pyo3::prelude::*;
 
@@ -46,9 +49,47 @@ fn all_lengths(anagram: &str, max: &usize, min: &usize) -> Vec<Vec<char>> {
     result
 }
 
+fn threader(anagram: &str, max: usize, min: usize) -> Vec<Vec<char>> {
+    let mut handles = vec![];
+
+    {
+        let max = if max > 6 {
+            6
+        } else {
+            max.clone()
+        };
+
+        let anagram = anagram.to_string();
+
+        let handle = thread::spawn(move || {
+            all_lengths(&anagram, &max, &min)
+        });
+
+        handles.push(handle);
+    }
+
+    for n in 7..max+1 {
+        let anagram = anagram.to_string();
+
+        let handle = thread::spawn(move || {
+            all_lengths(&anagram, &n, &n)
+        });
+
+        handles.push(handle);
+    }
+
+    let mut result = vec![];
+
+    for handle in handles {
+        result.append(&mut handle.join().unwrap());
+    }
+
+    result
+}
+
 #[pyfunction]
 fn solve_anagram(anagram: &str, max: usize, min: usize) -> PyResult<Vec<String>>{
-    let letters: Vec<Vec<char>> = all_lengths(&anagram, &max, &min);
+    let letters: Vec<Vec<char>> = threader(&anagram, max, min);
     let words: Vec<String> = fs::read_to_string("words.txt")
         .expect("Couldn't open words.txt. Does it exist?")
         .split('\n')
